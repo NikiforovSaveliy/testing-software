@@ -89,3 +89,39 @@ class BeverageAPITestCase(APITestCase):
         response = self.client.delete(f'/beverages/{beverage.id}/')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Beverage.objects.count(), 0)
+
+
+class UnAuthTestCase(APITestCase):
+    def setUp(self):
+        # Создаем тестовые данные
+        self.category = Category.objects.create(name="Test Category")
+        self.beverage_data = {
+            'name': 'Test Beverage',
+            'category': self.category.id,
+            'price': 100,
+            'is_available': True
+        }
+
+    def test_get_categories_unauthorized(self):
+        response = self.client.get('/categories/')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_category_unauthorized(self):
+        response = self.client.post('/categories/', {'name': 'Unauthorized Category'})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_update_category_unauthorized(self):
+        response = self.client.patch(f'/categories/{self.category.id}/', {'name': 'Updated Name'})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_delete_category_unauthorized(self):
+        response = self.client.delete(f'/categories/{self.category.id}/')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_create_beverage_unauthorized(self):
+        response = self.client.post('/beverages/', self.beverage_data)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_get_beverages_unauthorized(self):
+        response = self.client.get('/beverages/')
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
