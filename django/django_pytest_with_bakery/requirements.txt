@@ -1,4 +1,0 @@
-django==3.2.8
-model_bakery==1.4.0
-pytest==6.2.3
-pytest-django==4.2.0

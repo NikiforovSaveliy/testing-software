@@ -1,3 +1,0 @@
-# Django LTS 3.2.12 https://www.djangoproject.com/download/
-Django==3.2.12
-djangorestframework==3.12.4
